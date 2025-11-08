@@ -1,0 +1,60 @@
+[Version]
+Signature="$Windows NT$"
+Class=USB
+ClassGuid={36FC9E60-C465-11CF-8056-444553540000}
+Provider=%MANUFACTURER%
+DriverVer=01/01/2024,1.0.0.0
+CatalogFile=vusb_driver.cat
+
+[Manufacturer]
+%MANUFACTURER%=Devices,NT,NTx86
+
+[Devices.NT]
+%DEVICE_NAME%=USB_Install, USB\VID_%VENDOR_ID%&PID_%PRODUCT_ID%
+
+[Devices.NTx86]
+%DEVICE_NAME%=USB_Install, USB\VID_%VENDOR_ID%&PID_%PRODUCT_ID%
+
+[USB_Install.NT]
+Include=winusb.inf
+Needs=WinUSB.NT
+
+[USB_Install.NT.Services]
+Include=winusb.inf
+AddService=WinUSB,0x00000002,WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName="WinUSB Driver"
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\WinUSB.sys
+
+[USB_Install.NT.Wmi]
+Include=winusb.inf
+Needs=WinUSB.NT.Wmi
+
+[USB_Install.NT.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WinUSBCoInstaller.dll"
+
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles=11
+
+[SourceDisksNames]
+1="V-USB Driver Installation Disk"
+
+[SourceDisksFiles]
+WinUSBCoInstaller.dll=1
+
+[Strings]
+MANUFACTURER="V-USB Project"
+DEVICE_NAME="Arduino Button Box"
+VENDOR_ID=16c0
+PRODUCT_ID=05df

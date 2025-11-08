@@ -1,0 +1,58 @@
+{
+  "devices": {
+    "Button Box": {
+      "vendor_id": "0x16c0",
+      "product_id": "0x05df",
+      "description": "Arduino Button Box (V-USB)",
+      "mcu": "atmega328p",
+      "notes": "Default V-USB Button Box configuration"
+    },
+    "Arduino Device": {
+      "vendor_id": "0x16c0",
+      "product_id": "0x05df",
+      "description": "Generic Arduino Device (V-USB)",
+      "mcu": "atmega328p",
+      "notes": "Generic Arduino with V-USB bootloader"
+    },
+    "Arduino Uno": {
+      "vendor_id": "0x2341",
+      "product_id": "0x0043",
+      "description": "Arduino Uno (Standard)",
+      "mcu": "atmega328p",
+      "notes": "Standard Arduino Uno with CH340 or FT232RL"
+    },
+    "Arduino Micro": {
+      "vendor_id": "0x2341",
+      "product_id": "0x0243",
+      "description": "Arduino Micro (Native USB)",
+      "mcu": "atmega32u4",
+      "notes": "Arduino Micro with native USB support"
+    },
+    "Arduino Leonardo": {
+      "vendor_id": "0x2341",
+      "product_id": "0x8036",
+      "description": "Arduino Leonardo (Native USB)",
+      "mcu": "atmega32u4",
+      "notes": "Arduino Leonardo with native USB support"
+    }
+  },
+  "driver_settings": {
+    "auto_download": true,
+    "driver_url": "https://www.obdev.at/files/vusb/usbdriver.zip",
+    "timeout_seconds": 30,
+    "require_admin": true,
+    "installation_method": "pnputil"
+  },
+  "ui_settings": {
+    "window_width": 600,
+    "window_height": 500,
+    "theme": "default",
+    "auto_detect_on_start": false
+  },
+  "advanced": {
+    "enable_custom_vid_pid": true,
+    "enable_driver_browsing": true,
+    "enable_device_testing": true,
+    "log_level": "info"
+  }
+}

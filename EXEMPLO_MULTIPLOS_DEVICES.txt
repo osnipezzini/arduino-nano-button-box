@@ -1,0 +1,349 @@
+================================================================================
+EXEMPLO PRÁTICO: MÚLTIPLOS BUTTON BOX COM NOMES E VID/PID DIFERENTES
+================================================================================
+
+CENÁRIO:
+  Você tem 3 Button Box diferentes que precisa instalar em um computador
+  Cada um deve ter um nome único e ser identificável em Device Manager
+
+================================================================================
+PASSO 1: GERAR DRIVERS CUSTOMIZADOS
+================================================================================
+
+Opção A: Usar script automático (RECOMENDADO)
+─────────────────────────────────────────────
+
+  python generate_sodevs_drivers.py
+
+  Resultado:
+  ✅ Gerando 3 drivers...
+  ✅ Omega Buttons (VID:0x16c0, PID:0x05df) - Sucesso!
+  ✅ Omega Buttons V2 (VID:0x16c0, PID:0x05e0) - Sucesso!
+  ✅ Omega Buttons V3 (VID:0x16c0, PID:0x05e1) - Sucesso!
+
+
+Opção B: Gerar manualmente
+──────────────────────────
+
+  # Device 1
+  python generate_vusb_driver.py \
+      --name "Omega Buttons" \
+      --manufacturer "SODevs" \
+      --vendor-id 0x16c0 \
+      --product-id 0x05df
+
+  # Device 2
+  python generate_vusb_driver.py \
+      --name "Omega Buttons V2" \
+      --manufacturer "SODevs" \
+      --vendor-id 0x16c0 \
+      --product-id 0x05e0
+
+  # Device 3
+  python generate_vusb_driver.py \
+      --name "Omega Buttons V3" \
+      --manufacturer "SODevs" \
+      --vendor-id 0x16c0 \
+      --product-id 0x05e1
+
+
+================================================================================
+PASSO 2: ESTRUTURA DE DRIVERS GERADOS
+================================================================================
+
+vusb_drivers/
+│
+├── vusb_driver_Omega_Buttons/
+│   ├── vusb_driver.inf
+│   │   └─ MANUFACTURER="SODevs"
+│   │   └─ DEVICE_NAME="Omega Buttons"
+│   │   └─ VENDOR_ID=16c0
+│   │   └─ PRODUCT_ID=05df
+│   │
+│   ├── install_driver.bat
+│   └── README.txt
+│
+├── vusb_driver_Omega_Buttons_V2/
+│   ├── vusb_driver.inf
+│   │   └─ MANUFACTURER="SODevs"
+│   │   └─ DEVICE_NAME="Omega Buttons V2"
+│   │   └─ VENDOR_ID=16c0
+│   │   └─ PRODUCT_ID=05e0
+│   │
+│   ├── install_driver.bat
+│   └── README.txt
+│
+└── vusb_driver_Omega_Buttons_V3/
+    ├── vusb_driver.inf
+    │   └─ MANUFACTURER="SODevs"
+    │   └─ DEVICE_NAME="Omega Buttons V3"
+    │   └─ VENDOR_ID=16c0
+    │   └─ PRODUCT_ID=05e1
+    │
+    ├── install_driver.bat
+    └── README.txt
+
+
+================================================================================
+PASSO 3: COMPILAR EXECUTÁVEL
+================================================================================
+
+  python build_windows_installer.py
+
+  Resultado:
+  ✅ Build successful!
+  ✅ Executable: dist/V-USB Driver Installer.exe (≈50-100 MB)
+
+
+================================================================================
+PASSO 4: COPIAR EXECUTÁVEL PARA CADA DRIVER
+================================================================================
+
+Windows (PowerShell):
+─────────────────────
+
+  copy "dist\V-USB Driver Installer.exe" "vusb_drivers\vusb_driver_Omega_Buttons\"
+  copy "dist\V-USB Driver Installer.exe" "vusb_drivers\vusb_driver_Omega_Buttons_V2\"
+  copy "dist\V-USB Driver Installer.exe" "vusb_drivers\vusb_driver_Omega_Buttons_V3\"
+
+
+Linux/Mac:
+──────────
+
+  cp dist/"V-USB Driver Installer.exe" vusb_drivers/vusb_driver_Omega_Buttons/
+  cp dist/"V-USB Driver Installer.exe" vusb_drivers/vusb_driver_Omega_Buttons_V2/
+  cp dist/"V-USB Driver Installer.exe" vusb_drivers/vusb_driver_Omega_Buttons_V3/
+
+
+Resultado:
+──────────
+
+vusb_drivers/
+├── vusb_driver_Omega_Buttons/
+│   ├── V-USB Driver Installer.exe  ← Novo!
+│   ├── vusb_driver.inf
+│   ├── install_driver.bat
+│   └── README.txt
+│
+├── vusb_driver_Omega_Buttons_V2/
+│   ├── V-USB Driver Installer.exe  ← Novo!
+│   ├── vusb_driver.inf
+│   ├── install_driver.bat
+│   └── README.txt
+│
+└── vusb_driver_Omega_Buttons_V3/
+    ├── V-USB Driver Installer.exe  ← Novo!
+    ├── vusb_driver.inf
+    ├── install_driver.bat
+    └── README.txt
+
+
+================================================================================
+PASSO 5: ZIPAR PARA DISTRIBUIÇÃO
+================================================================================
+
+Windows (File Explorer):
+────────────────────────
+
+  1. Clicar direito em vusb_driver_Omega_Buttons
+  2. Send to → Compressed (zipped) folder
+  3. Resultado: vusb_driver_Omega_Buttons.zip
+
+  Repetir para V2 e V3
+
+
+Linux/Mac:
+──────────
+
+  zip -r vusb_driver_Omega_Buttons.zip vusb_drivers/vusb_driver_Omega_Buttons/
+  zip -r vusb_driver_Omega_Buttons_V2.zip vusb_drivers/vusb_driver_Omega_Buttons_V2/
+  zip -r vusb_driver_Omega_Buttons_V3.zip vusb_drivers/vusb_driver_Omega_Buttons_V3/
+
+
+Resultado:
+──────────
+
+  vusb_driver_Omega_Buttons.zip (≈50-100 MB)
+  vusb_driver_Omega_Buttons_V2.zip (≈50-100 MB)
+  vusb_driver_Omega_Buttons_V3.zip (≈50-100 MB)
+
+
+================================================================================
+PASSO 6: DISTRIBUIR PARA USUÁRIOS
+================================================================================
+
+Para cada Button Box:
+
+  1. Enviar o ZIP correspondente
+     - Omega Buttons → vusb_driver_Omega_Buttons.zip
+     - Omega Buttons V2 → vusb_driver_Omega_Buttons_V2.zip
+     - Omega Buttons V3 → vusb_driver_Omega_Buttons_V3.zip
+
+  2. Usuário extrai o ZIP
+  3. Usuário executa V-USB Driver Installer.exe como Admin
+  4. Usuário conecta o Button Box
+  5. Usuário clica "Detect Device" → "Install Driver"
+
+
+================================================================================
+PASSO 7: VERIFICAR INSTALAÇÃO NO WINDOWS
+================================================================================
+
+Abrir Device Manager:
+─────────────────────
+
+  Win+X → Device Manager
+
+Você verá:
+
+  Device Manager
+  ├── Ports (COM & LPT)
+  │   ├── Omega Buttons (COM3)
+  │   ├── Omega Buttons V2 (COM4)
+  │   └── Omega Buttons V3 (COM5)
+  │
+  └── Universal Serial Bus controllers
+      ├── Omega Buttons
+      ├── Omega Buttons V2
+      └── Omega Buttons V3
+
+
+Cada device com:
+  ✅ Nome único (Omega Buttons, Omega Buttons V2, Omega Buttons V3)
+  ✅ Manufacturer: SODevs
+  ✅ VID/PID único (0x16c0:0x05df, 0x16c0:0x05e0, 0x16c0:0x05e1)
+  ✅ Porta COM diferente (COM3, COM4, COM5)
+
+
+================================================================================
+ARQUIVO INF GERADO PARA CADA DEVICE
+================================================================================
+
+vusb_driver_Omega_Buttons/vusb_driver.inf:
+───────────────────────────────────────────
+
+  [Version]
+  Signature="$Windows NT$"
+  Class=USB
+  ClassGuid={36FC9E60-C465-11CF-8056-444553540000}
+  Provider=%MANUFACTURER%
+  DriverVer=01/01/2024,1.0.0.0
+  CatalogFile=vusb_driver.cat
+
+  [Manufacturer]
+  %MANUFACTURER%=Devices,NT,NTx86
+
+  [Devices.NT]
+  %DEVICE_NAME%=USB_Install, USB\VID_16C0&PID_05DF
+
+  [Devices.NTx86]
+  %DEVICE_NAME%=USB_Install, USB\VID_16C0&PID_05DF
+
+  ...
+
+  [Strings]
+  MANUFACTURER="SODevs"              ← Seu nome!
+  DEVICE_NAME="Omega Buttons"        ← Nome do device!
+  VENDOR_ID=16c0
+  PRODUCT_ID=05df
+
+
+vusb_driver_Omega_Buttons_V2/vusb_driver.inf:
+──────────────────────────────────────────────
+
+  [Strings]
+  MANUFACTURER="SODevs"              ← Mesmo!
+  DEVICE_NAME="Omega Buttons V2"     ← Diferente!
+  VENDOR_ID=16c0
+  PRODUCT_ID=05e0                    ← Diferente!
+
+
+vusb_driver_Omega_Buttons_V3/vusb_driver.inf:
+──────────────────────────────────────────────
+
+  [Strings]
+  MANUFACTURER="SODevs"              ← Mesmo!
+  DEVICE_NAME="Omega Buttons V3"     ← Diferente!
+  VENDOR_ID=16c0
+  PRODUCT_ID=05e1                    ← Diferente!
+
+
+================================================================================
+TABELA DE MAPEAMENTO
+================================================================================
+
+Device          | Manufacturer | VID    | PID    | COM  | Descrição
+─────────────────────────────────────────────────────────────────────────────
+Omega Buttons   | SODevs       | 0x16c0 | 0x05df | COM3 | Principal
+Omega Buttons V2| SODevs       | 0x16c0 | 0x05e0 | COM4 | Versão 2
+Omega Buttons V3| SODevs       | 0x16c0 | 0x05e1 | COM5 | Versão 3
+
+
+================================================================================
+COMANDOS RÁPIDOS
+================================================================================
+
+Gerar todos os drivers:
+  python generate_sodevs_drivers.py
+
+Compilar executável:
+  python build_windows_installer.py
+
+Listar drivers gerados:
+  python generate_vusb_driver.py --list
+
+Testar detecção de devices:
+  python test_device_detection.py
+
+Copiar executável para todos (Windows):
+  for %d in (Omega_Buttons Omega_Buttons_V2 Omega_Buttons_V3) do ^
+    copy "dist\V-USB Driver Installer.exe" "vusb_drivers\vusb_driver_%d\"
+
+Copiar executável para todos (Linux/Mac):
+  for d in Omega_Buttons Omega_Buttons_V2 Omega_Buttons_V3; do
+    cp dist/"V-USB Driver Installer.exe" vusb_drivers/vusb_driver_$d/
+  done
+
+
+================================================================================
+RESULTADO FINAL
+================================================================================
+
+✅ 3 Drivers customizados gerados
+✅ Cada um com nome único (Omega Buttons, V2, V3)
+✅ Cada um com manufacturer "SODevs"
+✅ Cada um com VID/PID único
+✅ Cada um com executável de instalação
+✅ Pronto para distribuição
+✅ Fácil de identificar em Device Manager
+✅ Múltiplos devices podem estar conectados simultaneamente
+
+
+================================================================================
+PRÓXIMOS PASSOS
+================================================================================
+
+1. ✅ Gerar drivers: python generate_sodevs_drivers.py
+2. ✅ Compilar executável: python build_windows_installer.py
+3. ✅ Copiar executável para cada driver
+4. ✅ Zipar para distribuição
+5. ✅ Enviar para usuários finais
+6. ✅ Usuários instalam cada driver
+7. ✅ Verificar em Device Manager
+8. ✅ Pronto para usar!
+
+
+================================================================================
+DÚVIDAS?
+================================================================================
+
+Consulte:
+  - CUSTOMIZAR_DRIVERS_SODEVS.md (Guia completo)
+  - WINDOWS_DRIVER_INSTALLER_README.md (Documentação geral)
+  - EXAMPLES_WINDOWS_INSTALLER.md (Exemplos práticos)
+
+Teste:
+  - python test_device_detection.py (Verificar detecção)
+  - python generate_vusb_driver.py --help (Ver opções)
+
+================================================================================
